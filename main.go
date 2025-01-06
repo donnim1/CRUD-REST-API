@@ -90,7 +90,8 @@ return func(w http.ResponseWriter, r *http.Request) {
 	err := db.QueryRow("SELECT * FROM users WHERE id = $1", id).Scan(&u.ID, &u.Name, &u.Email)
 	if err != nil {
 		//todo: handle error
-		log.Fatal(err)
+		w.WriteHeader(http.StatusNotFound)
+		return
 	}
 	json.NewEncoder(w).Encode(u)
 
@@ -147,3 +148,4 @@ func deleteUser(db *sql.DB) http.HandlerFunc {
 }
 
 
+//end
